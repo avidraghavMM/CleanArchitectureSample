@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Clean-Arch Sample</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="ist">IST</string>
+    <string name="failed_to_connect">Failed to connect</string>
+    <string name="retry">Retry</string>
+    <string name="search">Search…</string>
+    <string name="reminder_cancelled">Reminder Cancelled</string>
+    <string name="reminder_set_via_space_dawn">Reminder to see the Rocket Launch set via Space Dawn</string>
+    <string name="reminder">Reminder!</string>
+
+</resources>
