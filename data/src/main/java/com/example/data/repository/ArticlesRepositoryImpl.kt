@@ -1,6 +1,5 @@
 package com.example.data.repository
 
-import android.util.Log
 import com.example.data.mapper.ArticlesDomainToDataMapper
 import com.example.data.remote.ArticlesApi
 import com.example.domain.model.ArticlesResponseItem
@@ -18,7 +17,6 @@ class ArticlesRepositoryImpl @Inject constructor(
         val articles = api.getArticles().map {
             mapper.map(it)
         }
-        Log.d("test","repo")
         return flow { emit(articles) }
     }
 }
