@@ -2,51 +2,46 @@ package com.example.cleanarchitecturesample.presentation.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cleanarchitecturesample.presentation.mapper.ArticlesDomainToPresentationMapper
 import com.example.cleanarchitecturesample.presentation.model.ArticlesResponseItemUI
+import com.example.cleanarchitecturesample.presentation.model.toPresenter
+import com.example.cleanarchitecturesample.util.UIState
+import com.example.cleanarchitecturesample.util.dispatchers.DispatcherProvider
 import com.example.domain.usecases.GetArticlesUseCase
-import com.example.domain.utils.Resource
+import com.example.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class ArticlesListVM @Inject constructor(
     private val getArticlesUseCase: GetArticlesUseCase,
-    private val mapper: ArticlesDomainToPresentationMapper
+    private val dispatcherProvider: DispatcherProvider
 ) : ViewModel() {
 
-    private var _articlesList: MutableStateFlow<Resource<List<ArticlesResponseItemUI>>> =
-        MutableStateFlow(Resource.Loading())
-    val articlesList: StateFlow<Resource<List<ArticlesResponseItemUI>>> get() = _articlesList
+    private var _articlesState: MutableStateFlow<UIState<List<ArticlesResponseItemUI>>> =
+        MutableStateFlow(UIState.Empty)
+    val articlesState = _articlesState.asStateFlow()
 
     init {
         getArticles()
     }
 
-    private fun getArticles() {
-        viewModelScope.launch {
-            getArticlesUseCase()
-                // mapping can/should be done on different thread
-                .map {
-                    it.map { article ->
-                        mapper.map(article)
+    fun getArticles() {
+        viewModelScope.launch(dispatcherProvider.default) {
+            _articlesState.emit(UIState.Loading)
+            when (val response = getArticlesUseCase()) {
+                is Resource.Error -> {
+                    _articlesState.emit(UIState.Error(exception = response.exception))
+                }
+                is Resource.Success -> {
+                    val mappedResponse = response.data.map {
+                        it.toPresenter()
                     }
+                    _articlesState.emit(UIState.Success(data = mappedResponse))
                 }
-                .catch {
-                    _articlesList.emit(
-                        Resource.Error(
-                            message = it.localizedMessage ?: "Some error occurred"
-                        )
-                    )
-                }
-                .collect {
-                    _articlesList.emit(Resource.Success(data = it))
-                }
+            }
         }
     }
 }

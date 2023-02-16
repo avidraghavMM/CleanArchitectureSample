@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cleanarchitecturesample.R
-import com.example.cleanarchitecturesample.utils.Constants.Companion.ARTICLE_DATE_INPUT_FORMAT
-import com.example.cleanarchitecturesample.utils.Constants.Companion.DATE_OUTPUT_FORMAT
-import com.example.cleanarchitecturesample.utils.Helpers.Companion.formatTo
-import com.example.cleanarchitecturesample.utils.Helpers.Companion.toDate
 import com.example.cleanarchitecturesample.databinding.ItemArticlePreviewBinding
 import com.example.cleanarchitecturesample.presentation.model.ArticlesResponseItemUI
+import com.example.cleanarchitecturesample.util.Constants.Companion.ARTICLE_DATE_INPUT_FORMAT
+import com.example.cleanarchitecturesample.util.Constants.Companion.DATE_OUTPUT_FORMAT
+import com.example.cleanarchitecturesample.util.Helpers.Companion.formatTo
+import com.example.cleanarchitecturesample.util.Helpers.Companion.toDate
 
 class ArticlesAdapter : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>() {
 
