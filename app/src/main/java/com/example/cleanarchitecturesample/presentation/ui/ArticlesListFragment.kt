@@ -8,9 +8,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.cleanarchitecturesample.R
 import com.example.cleanarchitecturesample.databinding.FragmentArticlesListBinding
-import com.example.domain.utils.Resource
+import com.example.cleanarchitecturesample.util.Constants
+import com.example.cleanarchitecturesample.util.UIState
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * displays the list of articles received from the api
+ */
 @AndroidEntryPoint
 class ArticlesListFragment : Fragment(R.layout.fragment_articles_list) {
 
@@ -28,16 +32,23 @@ class ArticlesListFragment : Fragment(R.layout.fragment_articles_list) {
         setupRecyclerView()
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.articlesList.collect {
+            viewModel.articlesState.collect {
                 when (it) {
-                    is Resource.Error -> {
-                        showProgressBar(false)
-                        showErrorMessage(true, it.message.toString())
+                    UIState.Empty -> {
+                        // state when the api call has not yet
+                        // been initiated, in our case the api call
+                        // get initiated as soon as ViewModel is instantiated but
+                        // this will not always be the case
                     }
-                    is Resource.Loading -> {
+                    is UIState.Error -> {
+                        showProgressBar(false)
+                        showErrorMessage(true, it.exception.localizedMessage.orEmpty())
+                    }
+                    UIState.Loading -> {
+                        showErrorMessage(false)
                         showProgressBar(true)
                     }
-                    is Resource.Success -> {
+                    is UIState.Success -> {
                         showProgressBar(false)
                         articlesAdapter.differ.submitList(it.data)
                     }
@@ -47,7 +58,7 @@ class ArticlesListFragment : Fragment(R.layout.fragment_articles_list) {
 
         articlesAdapter.setOnItemClickListener {
             val bundle = Bundle().apply {
-                putParcelable("article", it)
+                putParcelable(Constants.ARTICLE, it)
             }
             findNavController().navigate(
                 R.id.action_articlesListFragment_to_articleDisplayFragment,
@@ -55,6 +66,7 @@ class ArticlesListFragment : Fragment(R.layout.fragment_articles_list) {
             )
         }
         binding.btnRetry.setOnClickListener {
+            viewModel.getArticles()
         }
     }
 

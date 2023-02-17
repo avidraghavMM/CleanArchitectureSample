@@ -1,6 +1,7 @@
 package com.example.data.model
 
 import androidx.annotation.Keep
+import com.example.domain.model.ArticlesResponseItem
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -29,3 +30,15 @@ data class ArticlesResponseItemEntity(
     @SerializedName("url")
     val url: String?
 ) : Serializable
+
+fun ArticlesResponseItemEntity.toDomain(): ArticlesResponseItem {
+    return ArticlesResponseItem(
+        id = id,
+        imageUrl = imageUrl,
+        summary = summary,
+        title = title,
+        url = url,
+        newsSite = newsSite,
+        publishedAt = publishedAt
+    )
+}
