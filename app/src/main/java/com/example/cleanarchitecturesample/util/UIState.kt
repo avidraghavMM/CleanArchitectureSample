@@ -7,7 +7,7 @@ package com.example.cleanarchitecturesample.util
 sealed class UIState<out T> {
 
     /**
-     * Empty corresponds to the state when the screen is ideal and no action has
+     * Empty corresponds to the state when the screen is idle and no action has
      * either been taken or in process.
      * see https://proandroiddev.com/kotlins-nothing-type-946de7d464fb to learn about Nothing Datatype
      */

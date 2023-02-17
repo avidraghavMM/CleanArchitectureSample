@@ -47,7 +47,7 @@ class ArticlesAdapter : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>() {
                 tvDescription.text = article.summary
                 tvPublishedAt.text = article.publishedAt
                     ?.toDate(Constants.ARTICLE_DATE_INPUT_FORMAT)
-                    ?.formatTo(Constants.DATE_OUTPUT_FORMAT) ?: ""
+                    ?.formatTo(Constants.DATE_OUTPUT_FORMAT).orEmpty()
 
                 itemView.setOnClickListener {
                     onItemClickListener?.let { it(article) }

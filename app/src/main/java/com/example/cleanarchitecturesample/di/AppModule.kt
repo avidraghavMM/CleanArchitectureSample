@@ -1,8 +1,6 @@
 package com.example.cleanarchitecturesample.di
 
 import com.example.cleanarchitecturesample.util.Constants
-import com.example.cleanarchitecturesample.util.dispatchers.DefaultDispatchers
-import com.example.cleanarchitecturesample.util.dispatchers.DispatcherProvider
 import com.example.data.remote.ArticlesApi
 import com.example.data.repository.ArticlesRepositoryImpl
 import com.example.domain.repository.ArticlesRepository
@@ -11,6 +9,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -55,7 +55,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDispatchersProvider(): DispatcherProvider {
-        return DefaultDispatchers()
+    fun provideCoroutineDispatcher(): CoroutineDispatcher {
+        return Dispatchers.Default
     }
 }

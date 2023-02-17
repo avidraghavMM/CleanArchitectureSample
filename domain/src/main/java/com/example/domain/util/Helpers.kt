@@ -24,7 +24,7 @@ sealed class Resource<out T> {
  * provided to it and wraps it in Resource Class based on the result of execution
  * @see Resource
  */
-suspend fun <T> safeApiCall(apiCall: suspend () -> T): Resource<T> {
+suspend fun <T> safeCall(apiCall: suspend () -> T): Resource<T> {
     return try {
         Resource.Success(data = apiCall())
     } catch (e: Exception) {
