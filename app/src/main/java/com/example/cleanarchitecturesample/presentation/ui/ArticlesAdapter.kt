@@ -9,10 +9,9 @@ import com.bumptech.glide.Glide
 import com.example.cleanarchitecturesample.R
 import com.example.cleanarchitecturesample.databinding.ItemArticlePreviewBinding
 import com.example.cleanarchitecturesample.presentation.model.ArticlesResponseItemUI
-import com.example.cleanarchitecturesample.util.Constants.Companion.ARTICLE_DATE_INPUT_FORMAT
-import com.example.cleanarchitecturesample.util.Constants.Companion.DATE_OUTPUT_FORMAT
-import com.example.cleanarchitecturesample.util.Helpers.Companion.formatTo
-import com.example.cleanarchitecturesample.util.Helpers.Companion.toDate
+import com.example.cleanarchitecturesample.util.Constants
+import com.example.cleanarchitecturesample.util.Helpers.formatTo
+import com.example.cleanarchitecturesample.util.Helpers.toDate
 
 class ArticlesAdapter : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>() {
 
@@ -47,8 +46,8 @@ class ArticlesAdapter : RecyclerView.Adapter<ArticlesAdapter.ViewHolder>() {
                 tvTitle.text = article.title
                 tvDescription.text = article.summary
                 tvPublishedAt.text = article.publishedAt
-                    ?.toDate(ARTICLE_DATE_INPUT_FORMAT)
-                    ?.formatTo(DATE_OUTPUT_FORMAT) ?: ""
+                    ?.toDate(Constants.ARTICLE_DATE_INPUT_FORMAT)
+                    ?.formatTo(Constants.DATE_OUTPUT_FORMAT) ?: ""
 
                 itemView.setOnClickListener {
                     onItemClickListener?.let { it(article) }
